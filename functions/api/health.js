@@ -39,6 +39,30 @@ export async function onRequestGet(context) {
 
   const missing = ['ADMIN_TOKEN', 'GITHUB_TOKEN', 'GITHUB_REPO'].filter((k) => !checks[k]);
 
+  const project = env.CF_PAGES_PROJECT_NAME || null;
+  const url = env.CF_PAGES_URL || '';
+  const deployment = {
+    project,
+    branch: env.CF_PAGES_BRANCH || null,
+    commit: env.CF_PAGES_COMMIT_SHA ? env.CF_PAGES_COMMIT_SHA.slice(0, 7) : null,
+    url: url || null,
+    looksProduction: project ? new RegExp(`^https://${project}\\.pages\\.dev`).test(url) : null,
+  };
+
+  let likelyCause = null;
+  if (missing.length === 3) {
+    likelyCause =
+      '三个变量同时缺失，通常不是填错值，而是配置没进入本次部署。' +
+      '请依次确认：① Settings → Environment variables 顶部的环境切换是否选了 Production（不是 Preview）；' +
+      '② 每个变量填完后是否点了页面底部的 Save；③ 是否在 Retry deployment 之后才访问本接口。';
+  } else if (missing.length) {
+    likelyCause = `只缺 ${missing.join('、')}，检查拼写是否为大写下划线（区分大小写）。`;
+  }
+  if (!checks.RESOURCES_KV) {
+    likelyCause = (likelyCause ? likelyCause + ' ' : '') +
+      'KV 未绑定：Settings → Functions → KV namespace bindings，Variable name 必须填 RESOURCES_KV。';
+  }
+
   let github = null;
   if (checks.GITHUB_TOKEN && checks.GITHUB_REPO) {
     try {
@@ -69,7 +93,9 @@ export async function onRequestGet(context) {
     ok,
     missing,
     checks,
+    deployment,
+    likelyCause,
     github,
-    ready: ok ? '配置完整，可以发布' : '尚不可发布，按 missing / github.problem 修正后 Retry deployment',
+    ready: ok ? '配置完整，可以发布' : '尚不可发布，按 missing / likelyCause / github.problem 修正后 Retry deployment',
   });
 }
