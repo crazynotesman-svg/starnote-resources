@@ -11,6 +11,8 @@ const CORS = {
   'Access-Control-Allow-Methods': 'GET, OPTIONS',
 };
 
+import { normEnv } from './_env.js';
+
 function json(body, status = 200) {
   return new Response(JSON.stringify(body, null, 2), {
     status,
@@ -23,7 +25,7 @@ export async function onRequestOptions() {
 }
 
 export async function onRequestGet(context) {
-  const env = context.env;
+  const { env, dirty } = normEnv(context.env);
 
   const branch = env.GITHUB_BRANCH || 'main';
   const path = env.GITHUB_PATH || 'public/data/resources.json';
@@ -89,10 +91,16 @@ export async function onRequestGet(context) {
 
   const ok = missing.length === 0 && (!github || github.status === 200);
 
+  if (dirty.length) {
+    likelyCause = (likelyCause ? likelyCause + ' ' : '') +
+      `以下变量带有多余空白，已在运行时自动 trim：${dirty.join('、')}。建议回控制台把值重新粘贴干净。`;
+  }
+
   return json({
     ok,
     missing,
     checks,
+    dirtyVariables: dirty,
     deployment,
     likelyCause,
     github,

@@ -19,6 +19,8 @@
  * 硬约束：口令逐字符敏感，全程 UTF-8 原样透传，不做任何 trim / 过滤。
  */
 
+import { normEnv } from './_env.js';
+
 const MAX_ITEMS = 5000;
 
 const CORS = {
@@ -176,7 +178,8 @@ export async function onRequestOptions() {
 }
 
 export async function onRequestPost(context) {
-  const { request, env } = context;
+  const { request } = context;
+  const env = normEnv(context.env).env;
 
   const missing = [];
   if (!env.ADMIN_TOKEN) missing.push('ADMIN_TOKEN');
