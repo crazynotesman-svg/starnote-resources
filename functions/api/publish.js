@@ -178,8 +178,20 @@ export async function onRequestOptions() {
 export async function onRequestPost(context) {
   const { request, env } = context;
 
-  if (!env.ADMIN_TOKEN || !env.GITHUB_TOKEN || !env.GITHUB_REPO) {
-    return json({ ok: false, error: '服务端未配置 ADMIN_TOKEN / GITHUB_TOKEN / GITHUB_REPO' }, 500);
+  const missing = [];
+  if (!env.ADMIN_TOKEN) missing.push('ADMIN_TOKEN');
+  if (!env.GITHUB_TOKEN) missing.push('GITHUB_TOKEN');
+  if (!env.GITHUB_REPO) missing.push('GITHUB_REPO');
+  if (missing.length) {
+    return json(
+      {
+        ok: false,
+        error: `缺少环境变量：${missing.join('、')}。请在 Cloudflare Pages → Settings → Environment variables 补齐后，到 Deployments 点 Retry deployment`,
+        missing,
+        hint: '改完环境变量必须重新部署才会生效',
+      },
+      500
+    );
   }
 
   let payload;
@@ -239,9 +251,11 @@ export async function onRequestPost(context) {
 
     const content = JSON.stringify(doc, null, 2) + '\n';
 
-    // 1) KV 即时生效
+    // 1) KV 即时生效（未绑定则降级：只靠 GitHub 重建，慢 1-2 分钟但不丢数据）
+    let kvWritten = false;
     if (env.RESOURCES_KV) {
       await env.RESOURCES_KV.put('resources', content);
+      kvWritten = true;
     }
 
     // 2) GitHub 提交（持久化 + 触发 Pages 重建）
@@ -253,6 +267,8 @@ export async function onRequestPost(context) {
       ok: true,
       ...stats,
       total,
+      kv: kvWritten,
+      kvWarning: kvWritten ? null : '未绑定 RESOURCES_KV，本次只写入 GitHub，展示页需等重建后更新（约 1-2 分钟）',
       commit: res && res.commit ? res.commit.html_url : null,
     });
   } catch (err) {
