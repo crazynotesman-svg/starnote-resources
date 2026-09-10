@@ -4,6 +4,9 @@
 
 **技术结构：GitHub（数据源 + 版本历史） + Cloudflare Pages（托管） + KV（即时层） + Pages Functions（发布接口）**
 
+- 仓库：<https://github.com/crazynotesman-svg/starnote-resources>
+- 线上：Cloudflare Pages 默认域名（不绑自定义域名）
+
 > **域名**：当前使用 Cloudflare Pages 默认域名 `xxx.pages.dev`，不绑定自定义域名。
 > 将来要绑（如 `res.100ideas.net`）时，在 Pages → Custom domains 里加一条即可，无需改代码。
 
@@ -83,10 +86,12 @@ starnote-resources/
 
 ### 4.1 建仓库
 
+仓库已建好并推送，跳过本节即可。要重来一遍的话：
+
 ```bash
 cd starnote-resources
 git init && git add . && git commit -m "feat: StarNote 资料口令库"
-git remote add origin git@github.com:<你的账号>/starnote-resources.git
+git remote add origin https://github.com/crazynotesman-svg/starnote-resources.git
 git push -u origin main
 ```
 
@@ -120,7 +125,7 @@ Pages 项目 → Settings → Environment variables（Production 与 Preview 都
 |---|---|
 | `ADMIN_TOKEN` | 维护页口令，见下方「管理口令」 |
 | `GITHUB_TOKEN` | 4.2 生成的 PAT，**勾选 Encrypt** |
-| `GITHUB_REPO` | `owner/repo`，如 `ron/starnote-resources` |
+| `GITHUB_REPO` | `crazynotesman-svg/starnote-resources` |
 | `GITHUB_BRANCH` | `main` |
 | `GITHUB_PATH` | `public/data/resources.json` |
 
