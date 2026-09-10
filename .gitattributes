@@ -1,0 +1,8 @@
+# 统一行尾，避免 Windows 检出时把 JSON / JS 转成 CRLF 造成无意义 diff
+* text=auto eol=lf
+
+# 二进制
+*.png binary
+*.jpg binary
+*.xlsx binary
+*.xls binary

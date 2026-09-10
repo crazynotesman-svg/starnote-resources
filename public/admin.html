@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-page-node-id="dNPkVYww6pzS8NJVwp8pbD">
+<head data-page-node-id="KqJ8HuAy2Y33Ff1JZ6Yfri">
+<meta charset="utf-8" data-page-node-id="HtCMJJ4yVtNnoTRGw2xK6r">
+<meta name="viewport" content="width=device-width, initial-scale=1" data-page-node-id="Sqa53Gibg1g84r8BAaU4GN">
+<title>资料维护 · StarNote 资料口令库</title>
+<meta name="robots" content="noindex, nofollow" data-page-node-id="iBXDG4UOv9PO2cQ2SNLyFo">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' data-page-node-id="5BkDqZl9dC2f5BulzE1tFJ"><text y='.9em' font-size='90' data-page-node-id="Vjq7DrJZp7IDpl575YiaOC">🔧</text></svg>">
+<link rel="stylesheet" href="./assets/app.css" data-page-node-id="NGPAd56gVU6RPHKTAowbG0">
+<link rel="stylesheet" href="./assets/admin.css" data-page-node-id="ALkX3wlhrYG27ADUOc4cex">
+</head>
+<body data-page-node-id="GYBSrcmfraHYWHc1JDGMMN">
+<div class="wrap narrow" data-page-node-id="BjLKdmQX9K1J00YDMiFMB1">
+
+  <header class="site" data-page-node-id="kUFytELSMTqp7VYftGQtMk">
+    <div class="brand" data-page-node-id="EBtZsRGhQnyEJEHC6xJa2G">
+      <h1 data-page-node-id="FSVPQIeYUruomPkH74bYBZ">资料维护</h1>
+      <a class="sub" href="./index.html" data-page-node-id="igzLiG3sj8x86usMNN4BgF">← 返回资料列表</a>
+    </div>
+    <div class="notice" data-page-node-id="C1fJAnsvHx503enYHwCXRE">
+      <span data-page-node-id="QCMbSkueiKKHrACenKeHfs">🔒</span>
+      <span data-page-node-id="NAHLpQ4SSityPHolRHit34">上传 Excel 后会先预览解析结果，确认无误再发布。管理口令不会保存在服务器上，仅用于本次会话。</span>
+    </div>
+  </header>
+
+  <section class="card" data-page-node-id="uzBfUiWPvAsCsVKbu2gb5F">
+    <div class="field" data-page-node-id="JLfAFBV0yLBauFmtCyz32S">
+      <label for="token" data-page-node-id="zws1eBhV8qYmjQ5kHUYQmD">管理口令</label>
+      <input id="token" type="password" placeholder="ADMIN_TOKEN" autocomplete="off" spellcheck="false" data-page-node-id="SOscWwFqChJHvIzB9i3KNl">
+      <p class="hint" data-page-node-id="jP8nh5xBVhZ9AdNWC9jxXn">即 Cloudflare 环境变量 <code data-page-node-id="JZhJvCwoCxE64GEmXcZ47y">ADMIN_TOKEN</code>，用于调用发布接口。
+        发布成功后会在当前标签页记住，<b>关闭标签页即失效</b>，不写入本机磁盘。</p>
+    </div>
+
+    <div class="field" data-page-node-id="FDwDamacjoiP83hD9QJ6rk">
+      <label for="group" data-page-node-id="CDJcPBw2rnYthFlnpU1wXW">一级类目</label>
+      <input id="group" list="group-list" placeholder="例如：四六级 / 考公 / 考研" autocomplete="off" data-page-node-id="Sn4PcQfYD2ZebGWBcWP8LM">
+      <datalist id="group-list" data-page-node-id="3tMt8fq77ETjQuvMWT7ugA"></datalist>
+      <p class="hint" data-page-node-id="9EDnQBN7qTTcESaCwIF1nR">填写新名称即可创建新类目；填写已有名称则更新该类目。</p>
+    </div>
+
+    <div class="field" data-page-node-id="2YFGS4L2QlevKW8QuyCwGK">
+      <label data-page-node-id="zOG5weBEJxxPVUQg5zxsa7">更新模式</label>
+      <div class="radios" data-page-node-id="3ux4HEzLFYLHXrKzB31eWp">
+        <label data-page-node-id="m9OPKBKFaB3PAHH2wohSI0"><input type="radio" name="mode" value="merge" checked data-page-node-id="rQ5RGDnr4g2plB4R7qVhnz"> 合并（只替换本次覆盖到的分类，推荐）</label>
+        <label data-page-node-id="L5NnNqUaHkA2HFOfvVVqBU"><input type="radio" name="mode" value="replace" data-page-node-id="Q3HmXketmFinIs5yUK0zi0"> 整类替换（清空该类目下所有旧分类）</label>
+      </div>
+    </div>
+  </section>
+
+  <section class="card" data-page-node-id="FRWavaWLjRvDdVWt2mqxWK">
+    <div class="field" data-page-node-id="DlnsYAe0oHrA7yiOm1ABHA">
+      <label data-page-node-id="Df7LC0QGVpJlDFr0ZhidvZ">选择 Excel 文件</label>
+      <div class="dropzone" id="drop" data-page-node-id="LQvaknIcJRnLd8FuUSbZRa">
+        <input type="file" id="file" accept=".xlsx,.xls,.csv" hidden data-page-node-id="LVCA43D2un3H4MHP5JIUS2">
+        <div class="dz-inner" data-page-node-id="VYdilZom4pJW4KHlEVFWf2">
+          <strong data-page-node-id="AHFwVf1iqYdyiHRCmC1l2L">点击选择</strong> 或把 .xlsx 拖到这里
+          <span class="dim" data-page-node-id="XUjmQuzjHV0LCvGrGkH6TJ">支持并排双栏版式（资料名 + 口令 成对列），也支持三列版式（分类 / 资料名称 / 提取口令）</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="card" id="previewCard" hidden data-page-node-id="UNuX3GbCMwIkp3GShkpwVJ">
+    <div class="card-head" data-page-node-id="3HuEtUIiCY1VoeVCc8U5aP">
+      <h2 data-page-node-id="ivDrgXCw6nPByPqm2OqdJC">解析预览</h2>
+      <span class="dim" id="fileName" data-page-node-id="lA93Fqf1viuJfSb2qCO47T"></span>
+    </div>
+    <div id="preview" data-page-node-id="7tsPVxNJoH161YtglRyt4j"></div>
+    <div class="actions-row" data-page-node-id="sqhZo8UpXpCby6PsLbwpTE">
+      <button class="btn primary" id="publish" type="button" data-page-node-id="AQUGlfqOeMOafYM86ap1Vl">确认发布</button>
+      <button class="btn" id="cancel" type="button" data-page-node-id="SQRfgPhKiAvg5ey4ZfGwxT">取消</button>
+    </div>
+    <div class="result" id="result" hidden data-page-node-id="F3JdoEtb7HMKumdpxEXxsI"></div>
+  </section>
+
+  <footer class="site" data-page-node-id="GSlotDRTCpAYlCzaZ8wP58">
+    <span data-page-node-id="0nV7xb3dmW4G29jfE0h9z0">发布后 KV 即时生效，GitHub 提交触发 Pages 重建（约 1-2 分钟）。</span>
+  </footer>
+
+</div>
+
+<div id="toast" role="status" aria-live="polite" data-page-node-id="64YGekhf7qRDAAzkTg71MR"></div>
+
+<script src="./vendor/xlsx.full.min.js"></script>
+<script src="./assets/parser.js"></script>
+<script src="./assets/admin.js"></script>
+</body>
+</html>

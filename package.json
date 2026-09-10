@@ -1,0 +1,15 @@
+{
+  "name": "starnote-resources",
+  "version": "1.0.0",
+  "private": true,
+  "description": "StarNote 资料口令库：GitHub 数据源 + Cloudflare Pages 托管 + KV 即时层",
+  "type": "module",
+  "scripts": {
+    "serve": "python3 -m http.server 8788 -d public",
+    "dev": "wrangler pages dev public --port 8788",
+    "import": "python3 scripts/import_xlsx.py",
+    "test": "node scripts/test_parser.mjs && node scripts/test_publish.mjs",
+    "smoke": "node scripts/smoke.mjs",
+    "token": "node scripts/gen_token.mjs"
+  }
+}
